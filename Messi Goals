@@ -1,0 +1,42 @@
+class PieChart {
+  constructor(data, x, y, radius) {
+    this.data = data;
+    this.x = x;
+    this.y = y;
+    this.radius = radius;
+    this.colors = ["#FF6B6B", "#FFB566", "#FFD93D", "#6BCB77", "#4D96FF"]; // Brighter, more vibrant colors
+    this.total = Object.values(data).reduce((sum, value) => sum + value, 0);
+  }
+
+  draw() {
+    let lastAngle = 0;
+    let i = 0;
+    for (let key in this.data) {
+      let sliceAngle = (this.data[key] / this.total) * TWO_PI;
+      fill(this.colors[i % this.colors.length]);
+      arc(this.x, this.y, this.radius * 2, this.radius * 2, lastAngle, lastAngle + sliceAngle, PIE);
+      lastAngle += sliceAngle;
+      i++;
+    }
+  }
+}
+
+let data = {
+  "header": 28,
+  "penalty": 111,
+  "freeKick": 66,
+  "outsideBox": 97,
+  "insideBox": 578
+};
+
+let pieChart;
+
+function setup() {
+  createCanvas(600, 400);
+  pieChart = new PieChart(data, width / 2, height / 2, 150);
+}
+
+function draw() {
+  background(240);
+  pieChart.draw();
+}
